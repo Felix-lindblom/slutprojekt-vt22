@@ -1,5 +1,5 @@
 <script>
-	
+
 </script>
 
 <main>
@@ -24,7 +24,11 @@
 					<h1>J</h1>
 					<p><em>10</em></p>
 				</figure>
-				
+				<figure>
+					<img src="../img/fennyJack.png" alt="Fenny jack logo">
+					<h1>9</h1>
+					<p><em>9</em></p>
+				</figure>
 				
 				<!-- huset kort här -->
 			</article>
@@ -36,7 +40,21 @@
 					
 				</aside>
 				<section id="playerCards">
-
+					<figure>
+						<img src="../img/fennyJack.png" alt="Fenny jack logo">
+						<h1>5</h1>
+						<p><em>5</em></p>
+					</figure>
+					<figure>
+						<img src="../img/fennyJack.png" alt="Fenny jack logo">
+						<h1>Q</h1>
+						<p><em>10</em></p>
+					</figure>
+					<figure>
+						<img src="../img/fennyJack.png" alt="Fenny jack logo">
+						<h1>6</h1>
+						<p><em>6</em></p>
+					</figure>
 				</section>
 			</article>
 		</main>
@@ -53,6 +71,11 @@
 		padding-left: $num;
 		padding-right: $num;
 	}
+	@mixin cardRatio($num,$unit){
+		height: 3.5*$num + $unit;
+		width: 2.45*$num + $unit;
+		/* Rätt förhållnade på kort */
+	}
 
 	$headercol: rgb(230, 139, 20) ;
 	$vlcol:rgb(100, 25, 5) ;
@@ -62,13 +85,14 @@
 	$greybak:rgb(75, 75, 75);
 	
 	header{
-		height: 10vh;
+		height: 10vw;
 		background-color: $headercol;
 		display: flex;
 		justify-content: space-between;
 		img{
 			@include sidesPad(1vw);
 		}
+		/* Behövs fixa bättre med storlkar */
 		.VLcon{
 			@include center() ;
 			@include sidesPad(3vw);
@@ -90,27 +114,35 @@
 	.pokerTabel{
 		height: 90vh;
 		background-color: $pokergreen;
+		/* https://css-tricks.com/how-to-stack-elements-in-css/ för göra mindre skärmar med flera kort funkar */
 
 		.houseArea{
 			@include center();
-			
-			figure{
-				background-color: $cardback;
-				height: 30rem;
-				width: 20rem;
-				margin: 2rem;
-				@include center();
-				justify-content: space-around;
-				flex-direction: column;
-				border-radius: 1rem;
-				img{
-					height: 7rem;
-					width: auto;
-				}
-				h1{
-					font-size: 4rem;
-				}
-			}
+		}
+
+		#playerCards{
+			@include center();
+		}		
+	}
+
+	/* Vill nog byta det till en klass */
+	figure{
+		background-color: $cardback;
+		@include cardRatio(10,rem );
+		margin: 2rem;
+		@include center();
+		justify-content: space-around;
+		flex-direction: column;
+		border-radius: 1rem;
+		img{
+			height: 7rem;
+			width: auto;
+		}
+		h1{
+			font-size: 4rem;
 		}
 	}
+
+
+
 </style>
