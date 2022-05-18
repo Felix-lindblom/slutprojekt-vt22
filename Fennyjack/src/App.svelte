@@ -1,9 +1,37 @@
 <script>
 
+/* Deck of cards api
+https://deckofcardsapi.com/ 
+*/
+
+async function getData(){
+
+
+	const deckUrl = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
+
+	let resp = await fetch(deckUrl);
+	let deckID = await resp.json();
+	console.log('Detta är id av din kortlek "' + deckID.deck_id +'"');
+	console.log(deckID)
+	/* bara testa att dra kort */
+	
+
+	/* körs 2 gånger nu */
+	let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+deckID.deck_id+'/draw/?count=2'
+	let Sresp = await fetch(cardDrawn);
+	let card = await Sresp.json();
+	console.log(card.cards[0])
+	console.log(card.cards[0].value)
+	let cardLetter = card.cards[0].value;
+}
+
+
 </script>
 
 <main>
-	
+{#await getData()} 
+
+{/await}
 	<body class="wrapper">
 		<header>
 			<img src="../img/fennyJack.png" alt="Fenny jack logo">
@@ -21,7 +49,7 @@
 			<article class="houseArea">
 				<figure>
 					<img src="../img/fennyJack.png" alt="Fenny jack logo">
-					<h1>J</h1>
+					<h1>j</h1>
 					<p><em>10</em></p>
 				</figure>
 				<figure>
