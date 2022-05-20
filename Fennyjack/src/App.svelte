@@ -3,50 +3,71 @@
 /* Deck of cards api
 https://deckofcardsapi.com/ 
 */
+	let Adeck = ''
 
-	async function getData(){
+	async function getData(num){
 
-		
-		const deckUrl = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
+		/* ska sova nu men titta om du kan skippa att skapa Adeck där upp och om den skapa i. Annars kan det kräva göra om detta en del */
+		if(Adeck.deck_id === undefined ||Adeck.reaming < 0){
+			const deckUrl = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
 
-		let resp = await fetch(deckUrl);
-		let deckID = await resp.json();
-		console.log('Detta är id av din kortlek "' + deckID.deck_id +'"');
-		/* console.log(deckID) */
-		/* bara testa att dra kort */
-		
-
-		/* körs 2 gånger nu, men det är inte en problem med att dealer ändå ska ha 2 dirket. eller vänta dealer ska få sist */
-		
-			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+deckID.deck_id+'/draw/?count=2'
+			let resp = await fetch(deckUrl);
+			let deckID = await resp.json();
+			console.log('Detta är id av din kortlek "' + deckID.deck_id +'"');
+			/* console.log(deckID) */
+			/* bara testa att dra kort */
+			Adeck = deckID
+			/* körs 2 gånger hmmmmm */
+			console.log('loop 1')
+		}else{
+			console.log("2 time")
+		}
+			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+Adeck.deck_id+'/draw/?count=' + num
 			let Sresp = await fetch(cardDrawn);
 			let card = await Sresp.json();
-			console.log(card.cards)
+/* 			console.log(card.cards) */
 			
-			console.log(card.cards[0].value)
+/* 			console.log(card.cards[0].value)
 			console.log(card.cards[1].value)
-			console.log('taken cards'+ card.cards.length)
+			console.log('taken cards'+ card.cards.length) */
 			
+			card.totP = 0 
 			
 		for (let i=0;i<card.cards.length;i++){
 			if(isNaN(card.cards[i].value)===true){
 				if (card.cards[i].value === "ACE"){
 					card.cards[i].bjValue = 11
+					card.totP += 11 
 				}else{
 					card.cards[i].bjValue = 10
+					card.totP += 10
 				}
 			}else{
 				card.cards[i].bjValue = card.cards[i].value
+				card.totP +=  parseInt(card.cards[i].value)	
+
 			}
 			
 		}	
-
-		console.log(card)
+		console.log(card.totP)
+		if (21 < card.totP){
+			card.totop = 'Bust'
+		}else if(card.totP === 21){
+			card.totP = 'Blackjack'
+		}
+		
 		
 		return card
 		
 	}
-
+	let fortnite = 0
+	function hit(inDeck){
+		/* let hitter = getData() */
+		console.log(fortnite)
+	}
+	function stand(hand){
+		fortnite += 1
+	}
 
 </script>
 
@@ -66,43 +87,19 @@ https://deckofcardsapi.com/
 			</aside>
 		</header>
 		<main class="pokerTabel">
-			<article class="houseArea">
+			
 
 
-				{#await getData()} 
+				{#await getData(2)} 
+				<article class="houseArea">
 					<h1 class="loading">wait for dealers card</h1>
-					{:then card}
-						{#each card.cards as playcard,i}
-							
-						<figure>
-							<img src="../img/fennyJack.png" alt="Fenny jack logo">
-							<h1>{card.cards[i].value}</h1>
-							<p><em>
-								
-								{card.cards[i].bjValue}
-							
-							</em></p>
-						</figure> 
-
-						{/each}
-						
-					
-				{/await}	
-
-				
-				<!-- huset kort här -->
-			</article>
-			<aside id="husCounter">
-				<h3>20</h3>
-			</aside>
-			<article class="playerArea">
-				<aside id="playerCounter">
-					<h3>19</h3>
+				</article>	
+				<aside id="husCounter">
+					<h3>Wait...</h3>		
 				</aside>
-				<section id="playerCards">
-					{#await getData()} 
-						<h1 class="loading">wait for players card</h1>
-						{:then card}
+				{:then card}
+						<article class="houseArea">
+						
 							{#each card.cards as playcard,i}
 								
 							<figure>
@@ -116,40 +113,99 @@ https://deckofcardsapi.com/
 							</figure> 
 
 							{/each}
-							
+
+						</article>
+
+					<aside id="husCounter">
+						<h3>{card.totP}</h3>		
+					</aside>
+
+				{/await}	
+
+				
+				<!-- huset kort här -->
+			
+			
+			<article class="playerArea">
+
+				
+					{#await getData(2)} 
+					<aside id="playerCounter">
+							<h3>wait</h3>
+					</aside>
+					<section id="playerCards">
+						<h1 class="loading">wait for players card</h1>
+						
+						
+					</section>
+						{:then card}
+							<aside id="playerCounter">
+								<h3>{card.totP} </h3>
+							</aside>							
+						<section id="playerCards">
+						
+							{#each card.cards as playcard,i}
+								
+							<figure>
+								<img src="../img/fennyJack.png" alt="Fenny jack logo">
+								<h1>{card.cards[i].value}</h1>
+								<p><em>
+									
+									{card.cards[i].bjValue}
+								
+								</em></p>
+							</figure> 
+
+							{/each}
+							<section class="playerButtons">
+								<button id="hitB" class="B" on:click={hit}>
+									<h3>Hit!</h3>
+								</button>
+								<button id="standB" class="B" on:click={stand} >
+									<h3>Stand</h3>
+								</button>
+							</section>
+
+						</section>
 						
 					{/await}	
-				</section>
+				
 			</article>
 		</main>
 	</body>
 </main>
 
 <style lang="scss">
-	@mixin center{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	@mixin sidesPad($num){
-		padding-left: $num;
-		padding-right: $num;
-	}
-	@mixin cardRatio($num,$unit){
-		height: 3.5*$num + $unit;
-		width: 2.45*$num + $unit;
-		/* Rätt förhållnade på kort */
-	}
 
-	$headercol: rgb(230, 139, 20) ;
-	$vlcol:rgb(100, 25, 5) ;
-	$Whittext:rgb(250,250,250);
-	$cardback:rgb(255, 250, 235);
-	$pokergreen:rgb(53,101,77);
-	$greybak:rgb(75, 75, 75);
-	$greytext:rgb(170, 150, 150);
-	$gold:rgb(255, 215, 0);
-	$browntext:rgb(54, 22, 13) ;
+	/* mixin */
+		@mixin center{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		@mixin sidesPad($num){
+			padding-left: $num;
+			padding-right: $num;
+		}
+		@mixin cardRatio($num,$unit){
+			height: 3.5*$num + $unit;
+			width: 2.45*$num + $unit;
+			/* Rätt förhållnade på kort */
+		}
+
+	/* colors */
+		$headercol: rgb(230, 139, 20) ;
+		$vlcol:rgb(100, 25, 5) ;
+		$Whittext:rgb(250,250,250);
+		$cardback:rgb(255, 250, 235);
+		$pokergreen:rgb(53,101,77);
+		$greybak:rgb(75, 75, 75);
+		$greytext:rgb(170, 150, 150);
+		$gold:rgb(255, 215, 0);
+		$browntext:rgb(54, 22, 13) ;
+		$hit:rgb(14, 176, 2) ;
+		$stand:rgb(20, 20, 20) ;
+	
 	
 
 	header{
@@ -209,13 +265,34 @@ https://deckofcardsapi.com/
 				@include center();
 				padding-left: 20vw;
 				h3{
-					font-size: 4rem
+					font-size: 4rem;
+					color: $Whittext
 				}
 			}
 
 			#playerCards{
 				@include center();
-			}		
+			}	
+
+			.playerButtons{
+				@include center();
+				flex-direction: column;
+				.B{
+					@include cardRatio(2,rem );
+					border-radius: 1rem;
+					border: 0;
+					margin: 1rem;
+				}
+				#hitB{
+					background-color: $hit;
+					color: $Whittext;
+				}
+				#standB{
+					background-color: $stand;
+					color: $Whittext;
+				}
+			}
+
 		}
 }
 
@@ -223,8 +300,7 @@ https://deckofcardsapi.com/
 	/* fundera om du istället vill ha vissa element placeras unkit såsom om  fennyjack placeras relativt till top och value i mitten */
 	figure{
 		background-color: $cardback;
-		@include cardRatio(10,rem );
-		
+		@include cardRatio(10,vh );
 		@include center();
 		justify-content: space-between;
 		flex-direction: column;
