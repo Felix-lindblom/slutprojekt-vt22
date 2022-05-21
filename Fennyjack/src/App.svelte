@@ -150,9 +150,7 @@ https://deckofcardsapi.com/
 								<img src="../img/fennyJack.png" alt="Fenny jack logo">
 								<h1>{card.cards[i].value}</h1>
 								<p><em>
-									
 									{card.cards[i].bjValue}
-								
 								</em></p>
 							</figure> 
 
@@ -300,22 +298,36 @@ https://deckofcardsapi.com/
 	/* fundera om du istället vill ha vissa element placeras unkit såsom om  fennyjack placeras relativt till top och value i mitten */
 	figure{
 		background-color: $cardback;
-		@include cardRatio(10,vh );
+		@include cardRatio(7,vh );
+		
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 2fr 1fr;
+		grid-template-areas: 
+		'lo'
+		'ty'
+		'va'
+		;
 		@include center();
+
+
 		justify-content: space-between;
 		flex-direction: column;
-		border-radius: 3ex;
+		border-radius: 1.5vh;
+		padding: 2vh;
 		img{
+			grid-area: lo;
 			height: 25%;
 			width: auto;
 		}
 		h1{
-			font-size: 600%;
-			
+			grid-area: ty;
+			font-size: 4vh;
 		}
 		em{
+			grid-area: va;
 			color: $greytext;
-			font-size: 300%;
+			font-size: 2vh;
 		}
 	}
 
