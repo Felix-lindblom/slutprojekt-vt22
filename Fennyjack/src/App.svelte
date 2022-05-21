@@ -3,7 +3,14 @@
 /* Deck of cards api
 https://deckofcardsapi.com/ 
 */
+
 	let Adeck = ''
+	let numCard = 2
+	let delarCard = 2
+	/* Sen när du ska imitera mig så sätt wins på 200 */
+	let wins = 1
+	let loses = 1
+
 
 	async function getData(num){
 
@@ -21,6 +28,7 @@ https://deckofcardsapi.com/
 			console.log('loop 1')
 		}else{
 			console.log("2 time")
+			console.log()
 		}
 			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+Adeck.deck_id+'/draw/?count=' + num
 			let Sresp = await fetch(cardDrawn);
@@ -50,23 +58,48 @@ https://deckofcardsapi.com/
 			
 		}	
 		console.log(card.totP)
-		if (21 < card.totP){
-			card.totop = 'Bust'
-		}else if(card.totP === 21){
-			card.totP = 'Blackjack'
+	
+		if(card.totP >= 21  ){
+			if(card.totP === 21	){
+				card.totp = 'blackjack'
+			}else{
+				card.totP = 'bust at ' + card.totP
+			}	
 		}
-		
+		console.log(card.totP > 21)
 		
 		return card
 		
 	}
-	let fortnite = 0
-	function hit(inDeck){
-		/* let hitter = getData() */
-		console.log(fortnite)
+
+	function hit(){
+		numCard += 1
 	}
-	function stand(hand){
-		fortnite += 1
+
+	function stand(){
+		/* vet att dennna inte funkar än men det ska vara något sånt här 
+		if (card.totP < 17){
+			/hus slåt bara om dom är under 16 eller 17 
+			delarCard += 1
+		}else{
+			console.log('check time')
+			/* tittar på spelares card.totp och om den är närmare 21 eller inte 
+			
+			
+		}*/
+		console.log('keep standing')
+	};
+
+
+
+	function Vl(){
+		return wins/loses
+	}
+	function win(){
+		wins += 1
+	}
+	function losted(){
+		loses += 1
 	}
 
 </script>
@@ -79,7 +112,7 @@ https://deckofcardsapi.com/
 			<aside class="VLcon">
 				<h2>VL</h2>
 				<article>
-					<h2>2.0</h2>
+					<h2>{Vl()}</h2>
 					<!-- poäng in här -->
 				</article>
 				<aside><h3>I</h3></aside>
@@ -90,7 +123,7 @@ https://deckofcardsapi.com/
 			
 
 
-				{#await getData(2)} 
+				{#await getData(delarCard)} 
 				<article class="houseArea">
 					<h1 class="loading">wait for dealers card</h1>
 				</article>	
@@ -129,7 +162,7 @@ https://deckofcardsapi.com/
 			<article class="playerArea">
 
 				
-					{#await getData(2)} 
+					{#await getData(numCard)} 
 					<aside id="playerCounter">
 							<h3>wait</h3>
 					</aside>
@@ -156,8 +189,8 @@ https://deckofcardsapi.com/
 
 							{/each}
 							<section class="playerButtons">
-								<button id="hitB" class="B" on:click={hit}>
-									<h3>Hit!</h3>
+								<button id="hitB" class="B" on:click={hit} >
+									<h3>HIT!</h3>
 								</button>
 								<button id="standB" class="B" on:click={stand} >
 									<h3>Stand</h3>
@@ -167,6 +200,7 @@ https://deckofcardsapi.com/
 						</section>
 						
 					{/await}	
+
 				
 			</article>
 		</main>
@@ -317,8 +351,8 @@ https://deckofcardsapi.com/
 		padding: 2vh;
 		img{
 			grid-area: lo;
-			height: 25%;
-			width: auto;
+			height: auto;
+			width: 20vh;
 		}
 		h1{
 			grid-area: ty;
