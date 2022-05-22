@@ -172,7 +172,7 @@ https://deckofcardsapi.com/
 
 	<body class="wrapper">
 		<header>
-			<img src="../img/fennyJack.png" alt="Fenny jack logo">
+			<img src="../img/fennyJack.svg" alt="Fenny jack logo">
 			<aside class="VLcon">
 				<h2>VL</h2>
 				<article>
@@ -202,7 +202,7 @@ https://deckofcardsapi.com/
 							{#each card.cards as playcard,i}
 								
 							<figure>
-								<img src="../img/fennyJack.png" alt="Fenny jack logo">
+								<img src="../img/fennyJack.svg" alt="Fenny jack logo">
 								<h1>{card.cards[i].value}</h1>
 								<p><em>
 									
@@ -248,7 +248,7 @@ https://deckofcardsapi.com/
 							{#each card.cards as playcard,i}
 								
 							<figure>
-								<img src="../img/fennyJack.png" alt="Fenny jack logo">
+								<img src="../img/fennyJack.svg" alt="Fenny jack logo">
 								<h1>{card.cards[i].value}</h1>
 								<p><em>
 									{card.cards[i].bjValue}
@@ -326,8 +326,10 @@ https://deckofcardsapi.com/
 			justify-content: space-between;
 			article{
 				background-color: $greybak;
-				@include sidesPad(1vw)
-			
+				@include sidesPad(1vw);
+				height:100% ;
+				margin: 0%;
+				@include center();
 			}
 
 		}
@@ -384,14 +386,15 @@ https://deckofcardsapi.com/
 					margin: 1vh;
 				}
 				#hitB{
+					display: flex;
 					background-color: $hit;
 					color: $Whittext;
-					font-size: 1.5vh;
+					font-size: 1.25rem;
 				}
 				#standB{
 					background-color: $stand;
 					color: $Whittext;
-					font-size: 1vh;
+					font-size: 1rem;
 				}
 			}
 
