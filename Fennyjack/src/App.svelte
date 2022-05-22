@@ -49,13 +49,16 @@ https://deckofcardsapi.com/
 		for (let i=0;i<card.cards.length;i++){
 			if(isNaN(card.cards[i].value)===true){
 				if (card.cards[i].value === "ACE"){
-
+					console.log('ace incoming '+card.totP)
+					console.log(card.totP > 10)
 					if (card.totP > 10){
 						card.cards[i].bjValue = 1
 						card.totP += 1
+					}else{
+						card.cards[i].bjValue = 11
+						card.totP += 11 	
 					}
-					card.cards[i].bjValue = 11
-					card.totP += 11 
+					
 				}else{
 					card.cards[i].bjValue = 10
 					card.totP += 10
