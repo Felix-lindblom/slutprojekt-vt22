@@ -166,6 +166,10 @@ https://deckofcardsapi.com/
 		loses += 1
 	}
 
+	function alertRegler(){
+		alert('Fennyjack är snarlikt till vanling blackjack på flera sätt. Men det som är unkit är att när du väljer hit så kommer du få ett till kort och dom fördetta blir nya värden. Om du väljer stand så kommer huset välja hit tills det blir mer eller den bustar. Om det är lika värde och du väljer stand så är det en tie och varken + eller - på dina vinster. Hur bra det går ser man på VL(Vinst och förlust) som tar ditt snitt på vinst och förlust, som KD. I consolen logas det en del om hur spelet går om du är nyfiken')
+	}
+
 </script>
 
 <main>
@@ -173,6 +177,9 @@ https://deckofcardsapi.com/
 	<body class="wrapper">
 		<header>
 			<img src="../img/fennyJack.svg" alt="Fenny jack logo">
+			<button id="rules" on:click={alertRegler} >
+				<h2 >Regler</h2>
+			</button>
 			<aside class="VLcon">
 				<h2>VL</h2>
 				<article>
@@ -296,6 +303,7 @@ https://deckofcardsapi.com/
 	/* colors */
 		$headercol: rgb(230, 139, 20) ;
 		$vlcol:rgb(100, 25, 5) ;
+		$rgcol:rgb(49, 45, 45);
 		$Whittext:rgb(250,250,250);
 		$cardback:rgb(255, 250, 235);
 		$pokergreen:rgb(53,101,77);
@@ -314,6 +322,19 @@ https://deckofcardsapi.com/
 		background-color: $headercol;
 		display: flex;
 		justify-content: space-between;
+		
+		
+		#rules{
+			background-color: $rgcol;
+			@include cardRatio(2,vh );
+			border-radius: 0.5vh;
+			h2{
+				
+				font-size: 1rem;
+				color: $Whittext;
+				margin: 0%
+			}
+		}
 		img{
 			@include sidesPad(1vw);
 		}
