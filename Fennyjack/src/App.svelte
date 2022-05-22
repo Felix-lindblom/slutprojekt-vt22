@@ -14,6 +14,13 @@ https://deckofcardsapi.com/
 	let houseval = 0
 	let playerval = 0
 
+	/* Ser dumt ut men annars kommer inte kort updateras om det är reda 2 */
+	function refreshCard(){
+		numCard = 0
+		delarCard = 0
+		numCard = 2
+		delarCard = 2
+	}
 
 	async function getData(num,owner){
 		/* ska sova nu men titta om du kan skippa att skapa Adeck där upp och om den skapa i. Annars kan det kräva göra om detta en del */
@@ -68,10 +75,7 @@ https://deckofcardsapi.com/
 				if(card.totP === 21	){
 					losted();
 					Vl();
-					numCard = 0
-					numCard = 2
-					delarCard = 0
-					delarCard = 2
+					refreshCard();
 					/* delay, pause, wait, timer here */
 					console.log('Dealer Won')
 
@@ -79,13 +83,9 @@ https://deckofcardsapi.com/
 					card.totP = 'bust at ' + card.totP
 					win();
 					Vl();
-					numCard = 2
-					/* om dealrs card är bara 2 uppdaterar den inte korten */
-					delarCard = 0
-					delarCard = 2
+					refreshCard();
 					console.log('Dealer bust')
-					numCard = 0
-					numCard = 2
+
 				}	
 
 			
@@ -105,9 +105,7 @@ https://deckofcardsapi.com/
 					if(card.totP === 21	){
 						win();
 						Vl();
-						numCard = 0
-						numCard = 2
-						delarCard = 2
+						refreshCard();
 						/* delay, pause, wait, timer here */
 						console.log('Win')
 
@@ -115,10 +113,7 @@ https://deckofcardsapi.com/
 					card.totP = 'bust at ' + card.totP
 					losted();
 					Vl();
-					numCard = 2
-					/* om dealrs card är bara 2 uppdaterar den inte korten */
-					delarCard = 0
-					delarCard = 2
+					refreshCard();
 					console.log('lost')
 				}	
 
@@ -137,16 +132,6 @@ https://deckofcardsapi.com/
 	}
 
 	function stand(){
-		/* vet att dennna inte funkar än men det ska vara något sånt här 
-		if (card.totP < 17){
-			/hus slåt bara om dom är under 16 eller 17 
-			delarCard += 1
-		}else{
-			console.log('check time')
-			/* tittar på spelares card.totp och om den är närmare 21 eller inte 
-			
-			
-		}*/
 		console.log(houseval + ' House')
 		console.log(playerval + ' Player')
 		console.log('keep standing ')
@@ -158,18 +143,12 @@ https://deckofcardsapi.com/
 			losted()
 			Vl()
 			console.log('tie')
-			numCard = 0
-			delarCard = 0
-			numCard = 2
-			delarCard = 2
+			refreshCard();
 		}else if(houseval>playerval){
 			losted()
 			Vl()
 			console.log('just dumb, you had nothing to loss')
-			numCard = 0
-			delarCard = 0
-			numCard = 2
-			delarCard = 2
+			refreshCard();
 		}
 	};
 
