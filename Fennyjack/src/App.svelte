@@ -310,13 +310,13 @@ https://deckofcardsapi.com/
 
 	header{
 		height: 7vh;
+		width: 100vw;
 		background-color: $headercol;
 		display: flex;
 		justify-content: space-between;
 		img{
 			@include sidesPad(1vw);
 		}
-		/* Behövs fixa bättre med storlkar */
 		.VLcon{
 			@include center() ;
 			@include sidesPad(3vw);
@@ -329,9 +329,7 @@ https://deckofcardsapi.com/
 				@include sidesPad(1vw)
 			
 			}
-			aside{
 
-			}
 		}
 	}
 	.loading{
@@ -340,10 +338,10 @@ https://deckofcardsapi.com/
 	}
 	.pokerTabel{
 		height: 93vh;
+		width: 100vw;
 		background-color: $pokergreen;
 		@include center();
 		flex-direction: column;
-		/* https://css-tricks.com/how-to-stack-elements-in-css/ för göra mindre skärmar med flera kort funkar */
 
 		.houseArea{
 			@include center();
@@ -380,58 +378,48 @@ https://deckofcardsapi.com/
 				@include center();
 				flex-direction: column;
 				.B{
-					@include cardRatio(2,rem );
-					border-radius: 1rem;
+					@include cardRatio(2,vh );
+					border-radius: 1vh;
 					border: 0;
-					margin: 1rem;
+					margin: 1vh;
 				}
 				#hitB{
 					background-color: $hit;
 					color: $Whittext;
+					font-size: 1.5vh;
 				}
 				#standB{
 					background-color: $stand;
 					color: $Whittext;
+					font-size: 1vh;
 				}
 			}
 
 		}
 }
 
-	/* Vill nog byta det till en klass */
-	/* fundera om du istället vill ha vissa element placeras unkit såsom om  fennyjack placeras relativt till top och value i mitten */
+
 	figure{
 		background-color: $cardback;
 		@include cardRatio(7,vh );
-		
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr 2fr 1fr;
-		grid-template-areas: 
-		'lo'
-		'ty'
-		'va'
-		;
 		@include center();
-
-
 		justify-content: space-between;
 		flex-direction: column;
 		border-radius: 1.5vh;
 		padding: 2vh;
 		img{
-			grid-area: lo;
+			width: 100%;
 			height: auto;
-			width: 20vh;
 		}
 		h1{
 			grid-area: ty;
-			font-size: 4vh;
+			font-size: 300%;
+			margin: 0%;
 		}
 		em{
-			grid-area: va;
 			color: $greytext;
-			font-size: 2vh;
+			font-size: 150%;
+			margin: 0%;
 		}
 	}
 
