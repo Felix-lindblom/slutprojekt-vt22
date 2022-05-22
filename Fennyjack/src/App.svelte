@@ -10,26 +10,22 @@ https://deckofcardsapi.com/
 	/* Sen när du ska imitera mig så sätt wins på 200 */
 	let wins = 1
 	let loses = 1
+	let score = 0
+	let houseval = 0
+	let playerval = 0
 
 
-	async function getData(num){
-
+	async function getData(num,owner){
 		/* ska sova nu men titta om du kan skippa att skapa Adeck där upp och om den skapa i. Annars kan det kräva göra om detta en del */
-		if(Adeck.deck_id === undefined ||Adeck.reaming < 0){
+
 			const deckUrl = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
 
 			let resp = await fetch(deckUrl);
 			let deckID = await resp.json();
-			console.log('Detta är id av din kortlek "' + deckID.deck_id +'"');
-			/* console.log(deckID) */
-			/* bara testa att dra kort */
+			/* console.log('Detta är id av din kortlek "' + deckID.deck_id +'"'); */
 			Adeck = deckID
-			/* körs 2 gånger hmmmmm */
-			console.log('loop 1')
-		}else{
-			console.log("2 time")
-			console.log()
-		}
+	
+
 			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+Adeck.deck_id+'/draw/?count=' + num
 			let Sresp = await fetch(cardDrawn);
 			let card = await Sresp.json();
@@ -41,9 +37,16 @@ https://deckofcardsapi.com/
 			
 			card.totP = 0 
 			
+
+
 		for (let i=0;i<card.cards.length;i++){
 			if(isNaN(card.cards[i].value)===true){
 				if (card.cards[i].value === "ACE"){
+
+					if (card.totP > 10){
+						card.cards[i].bjValue = 1
+						card.totP += 1
+					}
 					card.cards[i].bjValue = 11
 					card.totP += 11 
 				}else{
@@ -57,16 +60,71 @@ https://deckofcardsapi.com/
 			}
 			
 		}	
-		console.log(card.totP)
+			console.log(card.totP)
 	
-		if(card.totP >= 21  ){
-			if(card.totP === 21	){
-				card.totp = 'blackjack'
-			}else{
-				card.totP = 'bust at ' + card.totP
-			}	
+
+		if(owner === 'Dealer'){
+			if(card.totP >= 21  ){
+				if(card.totP === 21	){
+					losted();
+					Vl();
+					numCard = 0
+					numCard = 2
+					delarCard = 0
+					delarCard = 2
+					/* delay, pause, wait, timer here */
+					console.log('Dealer Won')
+
+				}else{
+					card.totP = 'bust at ' + card.totP
+					win();
+					Vl();
+					numCard = 2
+					/* om dealrs card är bara 2 uppdaterar den inte korten */
+					delarCard = 0
+					delarCard = 2
+					console.log('Dealer bust')
+				}	
+
+			
+			}
+			houseval = card.totP
+
+			
+
+
 		}
-		console.log(card.totP > 21)
+
+		if(owner === 'Player'){
+			playerval = card.totP
+		}
+
+		if(card.totP >= 21  ){
+					if(card.totP === 21	){
+						win();
+						Vl();
+						numCard = 0
+						numCard = 2
+						delarCard = 2
+						/* delay, pause, wait, timer here */
+						console.log('Win')
+
+				}else{
+					card.totP = 'bust at ' + card.totP
+					losted();
+					Vl();
+					numCard = 2
+					/* om dealrs card är bara 2 uppdaterar den inte korten */
+					delarCard = 0
+					delarCard = 2
+					console.log('lost')
+				}	
+
+				
+			}
+
+		
+
 		
 		return card
 		
@@ -87,13 +145,21 @@ https://deckofcardsapi.com/
 			
 			
 		}*/
-		console.log('keep standing')
+		console.log(houseval + ' House')
+		console.log(playerval + ' Player')
+		console.log('keep standing ')
+
+		if(houseval<playerval){
+			delarCard += 1
+		}
 	};
 
 
 
 	function Vl(){
-		return wins/loses
+		let num = wins/loses
+		score = (Math.round(num * 100) / 100).toFixed(2);
+		
 	}
 	function win(){
 		wins += 1
@@ -112,7 +178,7 @@ https://deckofcardsapi.com/
 			<aside class="VLcon">
 				<h2>VL</h2>
 				<article>
-					<h2>{Vl()}</h2>
+					<h2>{score}</h2>
 					<!-- poäng in här -->
 				</article>
 				<aside><h3>I</h3></aside>
@@ -123,9 +189,12 @@ https://deckofcardsapi.com/
 			
 
 
-				{#await getData(delarCard)} 
+				{#await getData(delarCard,'Dealer')} 
 				<article class="houseArea">
-					<h1 class="loading">wait for dealers card</h1>
+					<figure>
+						<h1 class="loading">wait for dealers card</h1>
+					</figure>
+					
 				</article>	
 				<aside id="husCounter">
 					<h3>Wait...</h3>		
@@ -162,13 +231,15 @@ https://deckofcardsapi.com/
 			<article class="playerArea">
 
 				
-					{#await getData(numCard)} 
+					{#await getData(numCard,'Player')} 
 					<aside id="playerCounter">
 							<h3>wait</h3>
 					</aside>
 					<section id="playerCards">
-						<h1 class="loading">wait for players card</h1>
-						
+
+						<figure>
+							<h1 class="loading">wait for playercards</h1>
+						</figure>
 						
 					</section>
 						{:then card}
@@ -241,7 +312,7 @@ https://deckofcardsapi.com/
 	
 
 	header{
-		height: 10vw;
+		height: 7vh;
 		background-color: $headercol;
 		display: flex;
 		justify-content: space-between;
@@ -267,12 +338,14 @@ https://deckofcardsapi.com/
 		}
 	}
 	.loading{
-		font-size: 7rem;
-		color: $Whittext;
+		font-size: 3vh;
+		color: black;
 	}
 	.pokerTabel{
-		height: 90vh;
+		height: 93vh;
 		background-color: $pokergreen;
+		@include center();
+		flex-direction: column;
 		/* https://css-tricks.com/how-to-stack-elements-in-css/ för göra mindre skärmar med flera kort funkar */
 
 		.houseArea{
@@ -283,6 +356,7 @@ https://deckofcardsapi.com/
 			@include center();
 			background-color: $gold;
 			color: $browntext;
+			width: 100vw;
 			h3{
 				font-size: 2rem;
 			}
@@ -292,10 +366,9 @@ https://deckofcardsapi.com/
 
 			#playerCounter{
 				height: 2*4rem;
-				width: 2*4rem;
+				width: 100vw;
 				background-color: $greybak;
 				@include center();
-				padding-left: 20vw;
 				h3{
 					font-size: 4rem;
 					color: $Whittext
