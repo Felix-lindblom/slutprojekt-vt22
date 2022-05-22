@@ -60,7 +60,7 @@ https://deckofcardsapi.com/
 			}
 			
 		}	
-			console.log(card.totP)
+		/* 	console.log(card.totP) */
 	
 
 		if(owner === 'Dealer'){
@@ -84,6 +84,8 @@ https://deckofcardsapi.com/
 					delarCard = 0
 					delarCard = 2
 					console.log('Dealer bust')
+					numCard = 0
+					numCard = 2
 				}	
 
 			
@@ -151,6 +153,23 @@ https://deckofcardsapi.com/
 
 		if(houseval<playerval){
 			delarCard += 1
+		}else if(houseval===playerval){
+			win()
+			losted()
+			Vl()
+			console.log('tie')
+			numCard = 0
+			delarCard = 0
+			numCard = 2
+			delarCard = 2
+		}else if(houseval>playerval){
+			losted()
+			Vl()
+			console.log('just dumb, you had nothing to loss')
+			numCard = 0
+			delarCard = 0
+			numCard = 2
+			delarCard = 2
 		}
 	};
 
@@ -181,7 +200,6 @@ https://deckofcardsapi.com/
 					<h2>{score}</h2>
 					<!-- poäng in här -->
 				</article>
-				<aside><h3>I</h3></aside>
 				<!-- För att förklara vad vl innebär och vad det står för. Vinst och förlust förhållande -->
 			</aside>
 		</header>
