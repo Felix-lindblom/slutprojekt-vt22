@@ -3,8 +3,7 @@
 /* Deck of cards api
 https://deckofcardsapi.com/ 
 */
-
-	let Adeck = ''
+	let cardHolder = ''
 	let numCard = 2
 	let delarCard = 2
 	/* Sen när du ska imitera mig så sätt wins på 200 */
@@ -23,22 +22,19 @@ https://deckofcardsapi.com/
 	}
 
 	async function getData(num,owner){
-		/* ska sova nu men titta om du kan skippa att skapa Adeck där upp och om den skapa i. Annars kan det kräva göra om detta en del */
 
 			const deckUrl = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
 
 			let resp = await fetch(deckUrl);
 			let deckID = await resp.json();
 			/* console.log('Detta är id av din kortlek "' + deckID.deck_id +'"'); */
-			Adeck = deckID
+			cardHolder = deckID
 	
-
-			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+Adeck.deck_id+'/draw/?count=' + num
+			let cardDrawn = 'https://deckofcardsapi.com/api/deck/'+cardHolder.deck_id+'/draw/?count=' + num
 			let Sresp = await fetch(cardDrawn);
 			let card = await Sresp.json();
-/* 			console.log(card.cards) */
-			
-/* 			console.log(card.cards[0].value)
+			/* console.log(card.cards) 
+			console.log(card.cards[0].value)
 			console.log(card.cards[1].value)
 			console.log('taken cards'+ card.cards.length) */
 			
@@ -49,8 +45,8 @@ https://deckofcardsapi.com/
 		for (let i=0;i<card.cards.length;i++){
 			if(isNaN(card.cards[i].value)===true){
 				if (card.cards[i].value === "ACE"){
-					console.log('ace incoming '+card.totP)
-					console.log(card.totP > 10)
+/* 					console.log('ace incoming '+card.totP)
+					console.log(card.totP > 10) */
 					if (card.totP > 10){
 						card.cards[i].bjValue = 1
 						card.totP += 1
@@ -70,22 +66,19 @@ https://deckofcardsapi.com/
 			}
 			
 		}	
-		/* 	console.log(card.totP) */
-	
 
 		if(owner === 'Dealer'){
 			if(card.totP >= 21  ){
 				if(card.totP === 21	){
-					losted();
-					Vl();
+					lost();
+					Wl();
 					refreshCard();
-					/* delay, pause, wait, timer here */
 					console.log('Dealer Won')
 
 				}else{
 					card.totP = 'bust at ' + card.totP
 					win();
-					Vl();
+					Wl();
 					refreshCard();
 					console.log('Dealer bust')
 
@@ -107,15 +100,14 @@ https://deckofcardsapi.com/
 		if(card.totP >= 21  ){
 					if(card.totP === 21	){
 						win();
-						Vl();
+						Wl();
 						refreshCard();
-						/* delay, pause, wait, timer here */
 						console.log('Win')
 
 				}else{
 					card.totP = 'bust at ' + card.totP
-					losted();
-					Vl();
+					lost();
+					Wl();
 					refreshCard();
 					console.log('lost')
 				}	
@@ -135,21 +127,21 @@ https://deckofcardsapi.com/
 	}
 
 	function stand(){
-		console.log(houseval + ' House')
-		console.log(playerval + ' Player')
+/* 		console.log(houseval + ' House')
+		console.log(playerval + ' Player') */
 		console.log('keep standing ')
 
 		if(houseval<playerval){
 			delarCard += 1
 		}else if(houseval===playerval){
 			win()
-			losted()
-			Vl()
+			lost()
+			Wl()
 			console.log('tie')
 			refreshCard();
 		}else if(houseval>playerval){
-			losted()
-			Vl()
+			lost()
+			Wl()
 			console.log('just dumb, you had nothing to loss')
 			refreshCard();
 		}
@@ -157,7 +149,7 @@ https://deckofcardsapi.com/
 
 
 
-	function Vl(){
+	function Wl(){
 		let num = wins/loses
 		score = (Math.round(num * 100) / 100).toFixed(2);
 		
@@ -165,12 +157,12 @@ https://deckofcardsapi.com/
 	function win(){
 		wins += 1
 	}
-	function losted(){
+	function lost(){
 		loses += 1
 	}
 
 	function alertRegler(){
-		alert('Fennyjack är snarlikt till vanling blackjack på flera sätt. Men det som är unkit är att när du väljer hit så kommer du få ett till kort och dom fördetta blir nya värden. Om du väljer stand så kommer huset välja hit tills det blir mer eller den bustar. Om det är lika värde och du väljer stand så är det en tie och varken + eller - på dina vinster. Hur bra det går ser man på VL(Vinst och förlust) som tar ditt snitt på vinst och förlust, som KD. I consolen logas det en del om hur spelet går om du är nyfiken')
+		alert('Fennyjack är snarlikt till vanling blackjack på flera sätt. Men det som är unkit är att när du väljer hit så kommer du få ett till kort och dom fördetta blir nya värden. Om du väljer stand så kommer huset välja hit tills det blir mer eller den bustar. Om det är lika värde och du väljer stand så är det en tie och varken + eller - på dina vinster. Hur bra det går ser man på WL(Wins and Loses) som tar ditt snitt på vinst och förlust, som KD. I consolen logas det en del om hur spelet går om du är nyfiken')
 	}
 
 </script>
@@ -183,22 +175,17 @@ https://deckofcardsapi.com/
 			<button id="rules" on:click={alertRegler} >
 				<h2 >Regler</h2>
 			</button>
-			<aside class="VLcon">
-				<h2>VL</h2>
+			<aside class="WLcon">
+				<h2>WL</h2>
 				<article>
 					<h2>{score}</h2>
-					<!-- poäng in här -->
 				</article>
-				<!-- För att förklara vad vl innebär och vad det står för. Vinst och förlust förhållande -->
 			</aside>
 		</header>
 		<main class="pokerTabel">
-			
-
-
-				{#await getData(delarCard,'Dealer')} 
+			{#await getData(delarCard,'Dealer')} 
 				<article class="houseArea">
-					<figure>
+					<figure class="displayCard">
 						<h1 class="loading">wait for dealers card</h1>
 					</figure>
 					
@@ -211,7 +198,7 @@ https://deckofcardsapi.com/
 						
 							{#each card.cards as playcard,i}
 								
-							<figure>
+							<figure class="displayCard">
 								<img src="../img/fennyJack.svg" alt="Fenny jack logo">
 								<h1>{card.cards[i].value}</h1>
 								<p><em>
@@ -230,11 +217,7 @@ https://deckofcardsapi.com/
 					</aside>
 
 				{/await}	
-
-				
-				<!-- huset kort här -->
-			
-			
+	
 			<article class="playerArea">
 
 				
@@ -244,7 +227,7 @@ https://deckofcardsapi.com/
 					</aside>
 					<section id="playerCards">
 
-						<figure>
+						<figure class="displayCard">
 							<h1 class="loading">wait for playercards</h1>
 						</figure>
 						
@@ -257,7 +240,7 @@ https://deckofcardsapi.com/
 						
 							{#each card.cards as playcard,i}
 								
-							<figure>
+							<figure class="displayCard">
 								<img src="../img/fennyJack.svg" alt="Fenny jack logo">
 								<h1>{card.cards[i].value}</h1>
 								<p><em>
@@ -305,7 +288,7 @@ https://deckofcardsapi.com/
 
 	/* colors */
 		$headercol: rgb(230, 139, 20) ;
-		$vlcol:rgb(100, 25, 5) ;
+		$Wlcol:rgb(100, 25, 5) ;
 		$rgcol:rgb(49, 45, 45);
 		$Whittext:rgb(250,250,250);
 		$cardback:rgb(255, 250, 235);
@@ -341,11 +324,11 @@ https://deckofcardsapi.com/
 		img{
 			@include sidesPad(1vw);
 		}
-		.VLcon{
+		.WLcon{
 			@include center() ;
 			@include sidesPad(3vw);
 			width: 10vw;
-			background-color: $vlcol;
+			background-color: $Wlcol;
 			color: $Whittext;
 			justify-content: space-between;
 			article{
@@ -426,7 +409,7 @@ https://deckofcardsapi.com/
 }
 
 
-	figure{
+	.displayCard{
 		background-color: $cardback;
 		@include cardRatio(7,vh );
 		@include center();
@@ -435,7 +418,7 @@ https://deckofcardsapi.com/
 		border-radius: 1.5vh;
 		padding: 2vh;
 		img{
-			width: 100%;
+			width: 75%;
 			height: auto;
 		}
 		h1{
@@ -449,7 +432,5 @@ https://deckofcardsapi.com/
 			margin: 0%;
 		}
 	}
-
-
-
 </style>
+<!-- Kod av Felix Lindblom aka Fennessy -->
